@@ -92,8 +92,10 @@
                 newY = viewportHeight - newY - buttonHeight * 2;
             }
             
-            newX = Math.max(0, Math.min(newX, viewportWidth - buttonWidth));
-            newY = Math.max(0, Math.min(newY, viewportHeight - buttonHeight));
+            // Add a padding to ensure the button never goes off-screen
+            const padding = 10;
+            newX = Math.max(padding, Math.min(newX, viewportWidth - buttonWidth - padding));
+            newY = Math.max(padding, Math.min(newY, viewportHeight - buttonHeight - padding));
 
             noButton.style.top = `${newY}px`;
             noButton.style.left = `${newX}px`;
@@ -186,4 +188,5 @@
     </script>
 </body>
 </html>
+
 
