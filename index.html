@@ -29,7 +29,38 @@
 
     <!-- Main Proposal Card -->
     <div id="proposal-card" class="text-center bg-white/80 backdrop-blur-sm p-8 md:p-12 rounded-3xl shadow-2xl transition-all duration-500 transform scale-100">
-        <img id="main-gif" src="https://placehold.co/200x200/F9A8D4/FFFFFF?text=❤️&font=lato" alt="A cute heart" class="w-48 h-48 mx-auto rounded-full mb-6 shadow-lg">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Question for Leooo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow: hidden; /* Hide scrollbars */
+        }
+        .font-pacifico {
+            font-family: 'Pacifico', cursive;
+        }
+        /* Custom styles for the "No" button transition */
+        #no-button {
+            transition: transform 0.3s ease, top 0.3s ease, left 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-pink-200 via-purple-200 to-indigo-300 flex items-center justify-center h-screen m-0 p-4">
+
+    <!-- Netlify form for submission -->
+    <form name="proposal" netlify hidden>
+        <input type="hidden" name="answer" id="answer-input">
+    </form>
+
+    <!-- Main Proposal Card -->
+    <div id="proposal-card" class="text-center bg-white/80 backdrop-blur-sm p-8 md:p-12 rounded-3xl shadow-2xl transition-all duration-500 transform scale-100">
+        <img id="main-gif" src="https://t3.ftcdn.net/jpg/00/19/89/58/360_F_19895879_uZ0tHguWowgKxb7jgUzuJk7IdXJCYZkI.jpg" alt="A cute heart" class="w-48 h-48 mx-auto rounded-full mb-6 shadow-lg">
         <h1 id="main-question" class="text-3xl md:text-5xl font-pacifico text-gray-800 mb-8">Leooo, will you be my girlfriend?</h1>
         
         <!-- Button container that prevents "Yes" button from moving -->
@@ -45,7 +76,7 @@
 
     <!-- Success Message Card (Initially Hidden) -->
     <div id="success-card" class="text-center bg-white/80 backdrop-blur-sm p-8 md:p-12 rounded-3xl shadow-2xl transition-all duration-500 transform scale-0 absolute">
-        <img src="https://media1.tenor.com/m/s0j0_n62r7kAAAAC/happy-dance.gif" alt="Excited bear dancing" class="w-48 h-48 mx-auto rounded-full mb-6 shadow-lg">
+        <img src="https://t3.ftcdn.net/jpg/00/19/89/58/360_F_19895879_uZ0tHguWowgKxb7jgUzuJk7IdXJCYZkI.jpg" alt="Excited bear dancing" class="w-48 h-48 mx-auto rounded-full mb-6 shadow-lg">
         <h1 class="text-3xl md:text-5xl font-pacifico text-gray-800">YAYYYY! 🎉</h1>
         <p class="text-gray-600 text-lg md:text-xl mt-4">See you on our first date! 😉</p>
     </div>
@@ -69,34 +100,37 @@
 
         let isButtonRunning = false;
         function moveButton() {
-            // Calculate random positions within the viewport, avoiding edges
-            const viewportWidth = window.innerWidth;
-            const viewportHeight = window.innerHeight;
-            const buttonWidth = noButton.offsetWidth;
-            const buttonHeight = noButton.offsetHeight;
-            
             // Set position to fixed only once to prevent layout shifts of other elements
             if (!isButtonRunning) {
                 isButtonRunning = true;
                 noButton.style.position = 'fixed';
             }
 
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+            const buttonWidth = noButton.offsetWidth;
+            const buttonHeight = noButton.offsetHeight;
             const cardRect = proposalCard.getBoundingClientRect();
+            const padding = 15; // Increased padding for safety
 
-            let newX = Math.random() * (viewportWidth - buttonWidth);
-            let newY = Math.random() * (viewportHeight - buttonHeight);
+            let newX, newY, isColliding;
 
-            // Avoid placing the button over the main card
-            if (newX > cardRect.left && newX < cardRect.right && newY > cardRect.top && newY < cardRect.bottom) {
-                newX = viewportWidth - newX - buttonWidth * 2;
-                newY = viewportHeight - newY - buttonHeight * 2;
-            }
-            
-            // Add a padding to ensure the button never goes off-screen
-            const padding = 10;
-            newX = Math.max(padding, Math.min(newX, viewportWidth - buttonWidth - padding));
-            newY = Math.max(padding, Math.min(newY, viewportHeight - buttonHeight - padding));
+            // Keep generating random positions until we find one that doesn't collide with the card
+            do {
+                // Generate a random position within the viewport, respecting the padding
+                newX = Math.random() * (viewportWidth - buttonWidth - 2 * padding) + padding;
+                newY = Math.random() * (viewportHeight - buttonHeight - 2 * padding) + padding;
 
+                // Check if the new position for the button would overlap with the card
+                isColliding = (
+                    newX < cardRect.right &&
+                    newX + buttonWidth > cardRect.left &&
+                    newY < cardRect.bottom &&
+                    newY + buttonHeight > cardRect.top
+                );
+            } while (isColliding);
+
+            // Apply the new, non-colliding position
             noButton.style.top = `${newY}px`;
             noButton.style.left = `${newX}px`;
         }
@@ -188,5 +222,171 @@
     </script>
 </body>
 </html>
+
+
+
+
+        <h1 id="main-question" class="text-3xl md:text-5xl font-pacifico text-gray-800 mb-8">Leooo, will you be my girlfriend?</h1>
+        
+        <!-- Button container that prevents "Yes" button from moving -->
+        <div class="relative h-14 w-full flex justify-center items-center">
+             <button id="yes-button" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transform hover:scale-110 transition-all duration-300 mr-4">
+                Yes
+            </button>
+            <button id="no-button" class="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-8 rounded-full shadow-lg">
+                No
+            </button>
+        </div>
+    </div>
+
+    <!-- Success Message Card (Initially Hidden) -->
+    <div id="success-card" class="text-center bg-white/80 backdrop-blur-sm p-8 md:p-12 rounded-3xl shadow-2xl transition-all duration-500 transform scale-0 absolute">
+        <img src="https://media1.tenor.com/m/s0j0_n62r7kAAAAC/happy-dance.gif" alt="Excited bear dancing" class="w-48 h-48 mx-auto rounded-full mb-6 shadow-lg">
+        <h1 class="text-3xl md:text-5xl font-pacifico text-gray-800">YAYYYY! 🎉</h1>
+        <p class="text-gray-600 text-lg md:text-xl mt-4">See you on our first date! 😉</p>
+    </div>
+
+    <!-- Confetti Canvas -->
+    <canvas id="confetti-canvas" class="absolute top-0 left-0 w-full h-full pointer-events-none"></canvas>
+
+    <script>
+        // --- DOM Elements ---
+        const proposalCard = document.getElementById('proposal-card');
+        const successCard = document.getElementById('success-card');
+        const yesButton = document.getElementById('yes-button');
+        const noButton = document.getElementById('no-button');
+        const confettiCanvas = document.getElementById('confetti-canvas');
+        const answerInput = document.getElementById('answer-input');
+
+        // --- "No" Button Logic ---
+        noButton.addEventListener('mouseover', moveButton);
+        noButton.addEventListener('touchstart', moveButton, { passive: true }); // For mobile
+        noButton.addEventListener('click', moveButton);
+
+        let isButtonRunning = false;
+        function moveButton() {
+            // Set position to fixed only once to prevent layout shifts of other elements
+            if (!isButtonRunning) {
+                isButtonRunning = true;
+                noButton.style.position = 'fixed';
+            }
+
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+            const buttonWidth = noButton.offsetWidth;
+            const buttonHeight = noButton.offsetHeight;
+            const cardRect = proposalCard.getBoundingClientRect();
+            const padding = 15; // Increased padding for safety
+
+            let newX, newY, isColliding;
+
+            // Keep generating random positions until we find one that doesn't collide with the card
+            do {
+                // Generate a random position within the viewport, respecting the padding
+                newX = Math.random() * (viewportWidth - buttonWidth - 2 * padding) + padding;
+                newY = Math.random() * (viewportHeight - buttonHeight - 2 * padding) + padding;
+
+                // Check if the new position for the button would overlap with the card
+                isColliding = (
+                    newX < cardRect.right &&
+                    newX + buttonWidth > cardRect.left &&
+                    newY < cardRect.bottom &&
+                    newY + buttonHeight > cardRect.top
+                );
+            } while (isColliding);
+
+            // Apply the new, non-colliding position
+            noButton.style.top = `${newY}px`;
+            noButton.style.left = `${newX}px`;
+        }
+
+        // --- "Yes" Button Logic ---
+        yesButton.addEventListener('click', () => {
+            // 1. Submit the form data in the background
+            answerInput.value = 'Yes!';
+            const form = document.querySelector('form[name="proposal"]');
+            const formData = new FormData(form);
+            
+            fetch("/", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: new URLSearchParams(formData).toString(),
+            }).catch((error) => console.error('Form submission error:', error));
+
+            // 2. Show the success UI
+            proposalCard.classList.remove('scale-100');
+            proposalCard.classList.add('scale-0');
+
+            setTimeout(() => {
+                successCard.classList.remove('scale-0');
+                successCard.classList.add('scale-100');
+                startConfetti();
+            }, 500);
+        });
+
+        // --- Confetti Logic ---
+        const ctx = confettiCanvas.getContext('2d');
+        confettiCanvas.width = window.innerWidth;
+        confettiCanvas.height = window.innerHeight;
+        let confettiPieces = [];
+
+        function startConfetti() {
+            confettiPieces = [];
+            for (let i = 0; i < 200; i++) {
+                confettiPieces.push(createConfetti());
+            }
+            animateConfetti();
+        }
+
+        function createConfetti() {
+            const colors = ['#f9a8d4', '#a78bfa', '#818cf8', '#60a5fa', '#fcd34d'];
+            return {
+                x: Math.random() * confettiCanvas.width,
+                y: -20,
+                w: 5 + Math.random() * 10,
+                h: 5 + Math.random() * 10,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                speed: 2 + Math.random() * 3,
+                tilt: Math.random() * 20 - 10,
+                tiltAngle: 0,
+                tiltAngleIncrement: 0.07 + Math.random() * 0.05
+            };
+        }
+
+        let animationFrameId = null;
+        function animateConfetti() {
+            ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+            confettiPieces.forEach((piece, index) => {
+                piece.y += piece.speed;
+                piece.tiltAngle += piece.tiltAngleIncrement;
+                piece.x += Math.sin(piece.tiltAngle) * 2;
+                piece.tilt = Math.sin(piece.tiltAngle) * 15;
+
+                if (piece.y > confettiCanvas.height) {
+                    confettiPieces[index] = createConfetti();
+                    confettiPieces[index].y = -20;
+                }
+                drawConfetti(piece);
+            });
+            animationFrameId = requestAnimationFrame(animateConfetti);
+        }
+
+        function drawConfetti(piece) {
+            ctx.save();
+            ctx.fillStyle = piece.color;
+            ctx.translate(piece.x + piece.w / 2, piece.y + piece.h / 2);
+            ctx.rotate(piece.tilt * Math.PI / 180);
+            ctx.fillRect(-piece.w / 2, -piece.h / 2, piece.w, piece.h);
+            ctx.restore();
+        }
+        
+        window.addEventListener('resize', () => {
+            confettiCanvas.width = window.innerWidth;
+            confettiCanvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
+
 
 
